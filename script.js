@@ -76,13 +76,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const box = document.getElementById('box');
     const hex = document.getElementById('hex');
-    hex.value = "000000"
+    hex.value = window.location.href.split("=")[1] || "000000"
+    updateRgbSliders();
+    updateHslSliders();
     box.style.backgroundColor = "#" + hex.value;
+    window.history.pushState("", "", "?hex=" + hex.value);
 
     hex.addEventListener('input', function() {
         if (isValid(hex.value)) {
             updateRgbSliders();
             updateHslSliders();
+            box.style.backgroundColor = "#" + hex.value;
         }
     });
 
@@ -203,7 +207,7 @@ function updateHslSliders() {
 }
 
 function setFills() {
-    const hsl = [document.getElementById('hue').value, document.getElementById('saturation').value, document.getElementById('luminance').value]
+    const hsl = [document.getElementById('hue').value, document.getElementById('saturation').value, document.getElementById('luminance').value];
 
     document.getElementById('redBox').style.background = "linear-gradient(to right, rgb(0, 0, 0), rgb(255, 0, 0))"
     document.getElementById('greenBox').style.background = "linear-gradient(to right, rgb(0, 0, 0), rgb(0, 255, 0))"
@@ -212,6 +216,9 @@ function setFills() {
     document.getElementById('hueBox').style.background = "linear-gradient(to right, hsl(0, 100%, 50%), hsl(120, 100%, 50%), hsl(240, 100%, 50%), hsl(360, 100%, 50%))"
     document.getElementById('satBox').style.background = "linear-gradient(to right, hsl(" + hsl[0] + ", 0%, 50%), hsl(" + hsl[0] + ", 100%, 50%))"
     document.getElementById('lumBox').style.background = "linear-gradient(to right, hsl(" + hsl[0] + ", " + hsl[1] + "%, 0%), hsl(" + hsl[0] + ", " + hsl[1] + "%, 50%), hsl(" + hsl[0] + ", " + hsl[1] + "%, 100%))"
+
+    const hex = document.getElementById('hex');
+    window.history.pushState("", "", "?hex=" + hex.value);
 }
 
 function hexToRgb(hex) {
